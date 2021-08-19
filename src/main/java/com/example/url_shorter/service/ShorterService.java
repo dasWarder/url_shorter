@@ -1,6 +1,8 @@
 package com.example.url_shorter.service;
 
 import com.example.url_shorter.dto.OriginalUrl;
+import com.example.url_shorter.exception.NullableParamException;
+import com.example.url_shorter.exception.ValidationException;
 import com.example.url_shorter.model.Url;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.validator.ValidatorException;
@@ -26,7 +28,7 @@ public class ShorterService implements ShorterUrlService {
     private RedisTemplate<String, Url> redisTemplate;
 
     @Override
-    public Url createShortUrl(String url) throws ValidatorException {
+    public Url createShortUrl(String url) throws ValidationException {
 
         log.info("Creating a new short URL for the original url");
         validateUrl(url);
@@ -39,7 +41,7 @@ public class ShorterService implements ShorterUrlService {
     }
 
     @Override
-    public OriginalUrl getOriginalUrl(String id) throws ValidatorException {
+    public OriginalUrl getOriginalUrl(String id) throws ValidationException, NullableParamException {
 
         validateObject(id);
         log.info("Receive an original URL by its id = {}", id);
