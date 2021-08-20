@@ -6,9 +6,13 @@ import com.example.url_shorter.exception.ValidationException;
 import com.example.url_shorter.model.Url;
 import com.example.url_shorter.service.ShorterUrlService;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.validator.ValidatorException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.net.URI;
 
 @RestController
 @RequiredArgsConstructor
@@ -26,10 +30,13 @@ public class MainController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<OriginalUrl> getOriginalUrl(@PathVariable("id") String id)
+    public ResponseEntity<Void> getOriginalUrl(@PathVariable("id") String id)
                                                         throws ValidationException, NullableParamException {
         OriginalUrl originalUrl = urlService.getOriginalUrl(id);
 
-        return ResponseEntity.ok(originalUrl);
+        return ResponseEntity
+                            .status(HttpStatus.FOUND)
+                            .location(URI.create(originalUrl.getUrl()))
+                            .build();
     }
 }
