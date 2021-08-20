@@ -9,5 +9,5 @@ public interface ShorterUrlService {
 
     Url createShortUrl(String url) throws ValidationException;
 
-    OriginalUrl getOriginalUrl(String id) throws ValidationException, NullableParamException;
+    String getOriginalUrl(String id) throws ValidationException, NullableParamException;
 }
